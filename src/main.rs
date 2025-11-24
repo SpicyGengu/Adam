@@ -5,7 +5,7 @@ mod groq_api_handler;
 mod twitter_api_handler;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let hard_tweet = 1992642119656415341;
+    let hard_tweet = 1992699928808960435;
 
     //let stdin = std::io::stdin();
     let groq_api_key_raw = fs::read_to_string("api_keys/groq_API_key.txt")?;
