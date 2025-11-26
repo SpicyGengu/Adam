@@ -5,7 +5,7 @@ mod groq_api_handler;
 mod twitter_api_handler;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let hard_tweet = 1992699928808960435;
+    let hard_tweet = 1993315004037382248;
 
     //let stdin = std::io::stdin();
     let groq_api_key_raw = fs::read_to_string("api_keys/groq_API_key.txt")?;
@@ -45,12 +45,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     */
 }
 
+// The string filtering functions rely heavily on REGEX so pull a cheatsheet out for this one
 fn filter_ai_response(api_response: String) -> Result<String, Box<dyn std::error::Error>> {
     let regex = Regex::new("\"content\":\"(?<middle>.*?)\"").unwrap();
-    let Some(caps) = regex.captures(&api_response) else { panic!("groq API response filtering failed") };
+    let Some(caps) = regex.captures(&api_response) else { 
+        return Err("groq API response filtering failed".into()) 
+    };
     Ok(caps[1].to_string())
 }
 
+// The string filtering functions rely heavily on REGEX so pull a cheatsheet out for this one
 fn filter_read_tweet(tweet_text: String) -> Result<String, Box<dyn std::error::Error>> {
     let regex = Regex::new(r"(.*?)(?:https?:|$)").unwrap();
     let Some(caps) = regex.captures(&tweet_text) else { 
