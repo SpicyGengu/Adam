@@ -49,25 +49,6 @@ pub async fn post_tweet(client: &TwitterApi<Oauth1aToken>, tweet_contents: Strin
                 .await?;
         }
     }
-
-    // Debuging if needed
-    /*
-    let tweet = client
-        .post_tweet()
-        .text(tweet_contents)
-        .send()
-        .await?;
-    match &tweet.data {
-        Some(tweet_data) => {
-            println!("Posted tweet: {}", tweet_data.id);
-            println!("Tweet text: {}", tweet_data.text);
-        }
-        None => {
-            return Err("Tweet was posted but no data returned from Twitter API".into());
-        }
-    }
-    */
-
     Ok(())
 }
 
@@ -83,54 +64,19 @@ pub async fn read_tweet(client: &TwitterApi<Oauth1aToken>, tweet_id: impl IntoNu
     }
 }
 
-
-
-
-
-
-
-// example
-/*
-use twitter_v2::TwitterApi;
-use twitter_v2::authorization::Oauth1aToken;
-
-// This ONE client can do both reading AND writing
-fn setup_twitter_client() -> TwitterApi<Oauth1aToken> {
-    let auth = Oauth1aToken::new(
-        "your_api_key",
-        "your_api_secret", 
-        "your_access_token",
-        "your_access_token_secret",
-    );
-    TwitterApi::new(auth)
-}
-
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let twitter = setup_twitter_client();
-    
-    // WRITE - Post a tweet
-    let tweet = twitter
-        .post_tweet()
-        .text("Hello from Rust! 🦀")
+pub async fn search_for_tweets(client: &TwitterApi<Oauth1aToken>, query: String) -> Result<Vec<(impl IntoNumericId, String)>, Box<dyn Error>> {
+    let tweet = client
+        .get_tweets_search_recent(query)
+        .max_results(10)
         .send()
         .await?;
-    println!("Posted tweet: {}", tweet.data.id);
-    
-    // READ - Search for tweets
-    let search_results = twitter
-        .get_tweets_search_recent()
-        .query("rust programming")
-        .max_results(5)
-        .send()
-        .await?;
-    
-    if let Some(tweets) = search_results.data {
-        for tweet in tweets {
-            println!("Found tweet: {}", tweet.text);
-        }
+    match &tweet.data {
+        Some(tweet_list) => Ok(
+            tweet_list.iter()
+                .map(|tweet| (tweet.id, tweet.text.to_string()))
+                .collect()
+        ),
+        None => Err("Tweets not found or no data returned".into()),
     }
-    
-    Ok(())
 }
-*/
