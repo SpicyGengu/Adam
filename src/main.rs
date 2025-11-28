@@ -8,7 +8,7 @@ mod twitter_api_handler;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let twitterless = true; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
     
-    let hard_tweet: u64 = 1994045362936664255;
+    let hard_tweet: u64 = 1497155881317904400;
     let queries = [
         "woke agenda".to_string(),
         "women back kitchen".to_string(),
@@ -22,13 +22,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let groq_client = groq_api_handler::create_client();
     let twitter_client = twitter_api_handler::create_client()?;
     
+    let mut potential_tweets;
     let mut tweet;
     let mut tweet_id;
 
     random_querie_index = rng.random_range(0..queries.len());
 
     if !twitterless {
-        let potential_tweets = twitter_api_handler::search_for_tweets(&twitter_client, queries[random_querie_index].clone())?;
+        potential_tweets = twitter_api_handler::search_for_tweets(&twitter_client, queries[random_querie_index].clone())?;
         random_tweet_index = rng.random_range(0..potential_tweets.len());
         tweet = potential_tweets[random_tweet_index].1.clone();
         tweet_id = potential_tweets[random_tweet_index].0.clone();
