@@ -4,7 +4,6 @@ use twitter_v2::TwitterApi;
 use twitter_v2::authorization::Oauth1aToken;
 use twitter_v2::prelude::IntoNumericId;
 
-
 #[derive(Debug, Deserialize)]
 struct TwitterAuth {
     api_key: String,
@@ -65,7 +64,7 @@ pub async fn read_tweet(client: &TwitterApi<Oauth1aToken>, tweet_id: impl IntoNu
 }
 
 #[tokio::main]
-pub async fn search_for_tweets(client: &TwitterApi<Oauth1aToken>, query: String) -> Result<Vec<(impl IntoNumericId, String)>, Box<dyn Error>> {
+pub async fn search_for_tweets(client: &TwitterApi<Oauth1aToken>, query: String) -> Result<Vec<(u64, String)>, Box<dyn Error>> {
     let tweet = client
         .get_tweets_search_recent(query)
         .max_results(10)
@@ -74,7 +73,7 @@ pub async fn search_for_tweets(client: &TwitterApi<Oauth1aToken>, query: String)
     match &tweet.data {
         Some(tweet_list) => Ok(
             tweet_list.iter()
-                .map(|tweet| (tweet.id, tweet.text.to_string()))
+                .map(|tweet| (tweet.id.as_u64(), tweet.text.to_string()))
                 .collect()
         ),
         None => Err("Tweets not found or no data returned".into()),

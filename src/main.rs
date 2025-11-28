@@ -1,33 +1,41 @@
 use std::fs;
 use regex::Regex;
+use rand::prelude::*;
 
 mod groq_api_handler;
 mod twitter_api_handler;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let twitterless = true; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
+    
     let hard_tweet: u64 = 1994045362936664255;
     let queries = [
         "woke agenda".to_string(),
         "women back kitchen".to_string(),
         "redpill".to_string()];
+    let mut random_querie_index;
+    let mut random_tweet_index;
+    let mut rng = rand::rng();
 
-    let twitterless = true; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
     let groq_api_key_raw = fs::read_to_string("api_keys/groq_API_key.txt")?;
     let groq_api_key = format!("Bearer {groq_api_key_raw}");
     let groq_client = groq_api_handler::create_client();
     let twitter_client = twitter_api_handler::create_client()?;
     
-    let potential_tweets = if !twitterless {
-        Some(twitter_api_handler::search_for_tweets(&twitter_client, queries[0].clone())?)
-    } else {
-        None
-    };
+    let mut tweet;
+    let mut tweet_id;
 
-    let tweet = if twitterless {
-        "I'm saying women should get back in the kitchen, and men should be the kind of men that allow them to do so. The current state of the world is due to demanding women and weak ass men that say yes to everything.".to_string()
+    random_querie_index = rng.random_range(0..queries.len());
+
+    if !twitterless {
+        let potential_tweets = twitter_api_handler::search_for_tweets(&twitter_client, queries[random_querie_index].clone())?;
+        random_tweet_index = rng.random_range(0..potential_tweets.len());
+        tweet = potential_tweets[random_tweet_index].1.clone();
+        tweet_id = potential_tweets[random_tweet_index].0.clone();
     } else {
-        potential_tweets.unwrap()[0].1.clone()
-    };
+        tweet = "".to_string();
+        tweet_id = 1497155881317904400;
+    }
 
     println!("{tweet}");
     let filtered_tweet = filter_read_tweet(tweet)?;
@@ -40,7 +48,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{response}");
 
     if !twitterless {
-        twitter_api_handler::post_tweet(&twitter_client, response, true, Some(hard_tweet))?;
+        twitter_api_handler::post_tweet(&twitter_client, response, true, Some(tweet_id))?;
     }
 
     Ok(())
