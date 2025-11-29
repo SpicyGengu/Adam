@@ -6,7 +6,7 @@ mod groq_api_handler;
 mod twitter_api_handler;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let twitterless = true; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
+    let twitterless = false; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
     
     let hard_tweet: u64 = 1497155881317904400;
     let queries = [
