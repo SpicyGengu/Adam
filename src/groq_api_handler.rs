@@ -1,7 +1,7 @@
 use reqwest::{self, Client};
 
 #[tokio::main]
-pub async fn request(prompt: String, client: Client, api_key_req: String) -> Result<String, Box<dyn std::error::Error>> {
+pub async fn request(prompt: String, client: &Client, api_key_req: &String) -> Result<String, Box<dyn std::error::Error>> {
     let response = client.post("https://api.groq.com/openai/v1/chat/completions")
         .header("Authorization", api_key_req)
         .json(&construct_json(prompt))

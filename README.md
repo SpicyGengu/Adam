@@ -9,7 +9,8 @@ The code is just barely usable right now. You can hardcode the twitter id and th
     - [x] Find certain interest circles to move around in
     - [x] Filter out tweets that have no text (only relevant while other media can't be interpreted)
 - [ ] Continously post Tweets
-    - [ ] Put main into a while loop
+    - [x] Make queries an external module so it can be ajusted without recompiling
+    - [x] Put main into a while loop
     - [ ] Add randomnes into the posting interval (make it seem more human)
 - [ ] Prioritise Tweets the account is mentioned in
 - [ ] Randomly decide to post Tweet or reply to a tweet
@@ -17,4 +18,4 @@ The code is just barely usable right now. You can hardcode the twitter id and th
 
 # Potential Problems
 - Adam does understand and answers to absloutel any language (Hilarious but not very human like)
-- 
+- No one is responding :( (But people do like yay!)
