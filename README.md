@@ -12,7 +12,7 @@ The code is just barely usable right now. You can hardcode the twitter id and th
     - [x] Make queries an external module so it can be ajusted without recompiling
     - [x] Put main into a while loop
     - [x] Add randomnes into the posting interval (make it seem more human)
-    - [ ] Introduce a sleep scheduel
+    - [x] Introduce a sleep scheduel
 - [ ] Prioritise Tweets the account is mentioned in
 - [ ] Randomly decide to post Tweet or reply to a tweet
 - [ ] Read and understand media other than text
