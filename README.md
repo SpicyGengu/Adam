@@ -8,10 +8,11 @@ The code is just barely usable right now. You can hardcode the twitter id and th
 - [x] Find Tweets to respon to
     - [x] Find certain interest circles to move around in
     - [x] Filter out tweets that have no text (only relevant while other media can't be interpreted)
-- [ ] Continously post Tweets
+- [x] Continously post Tweets
     - [x] Make queries an external module so it can be ajusted without recompiling
     - [x] Put main into a while loop
-    - [ ] Add randomnes into the posting interval (make it seem more human)
+    - [x] Add randomnes into the posting interval (make it seem more human)
+    - [ ] Introduce a sleep scheduel
 - [ ] Prioritise Tweets the account is mentioned in
 - [ ] Randomly decide to post Tweet or reply to a tweet
 - [ ] Read and understand media other than text

@@ -8,7 +8,7 @@ mod groq_api_handler;
 mod twitter_api_handler;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let twitterless = false; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
+    let twitterless = true; // use this for faster code testing, the free version of twitter api allows one tweet posted and read every 15 min, ain't nobody got time for that
     
     let hard_tweet: u64 = 1497155881317904400;
     
@@ -32,10 +32,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut response;
 
     loop {
-        timeout = 15*60+15;
+        timeout = 15*60+rng.random_range(10..900); //maximum timeout is 30min and minimum is 15min and 10sec
 
         queries = get_queries()?;
         random_querie_index = rng.random_range(0..queries.len());
+        println!("{random_querie_index}");
     
         if !twitterless {
             potential_tweets = twitter_api_handler::search_for_tweets(&twitter_client, queries[random_querie_index].clone())?;
